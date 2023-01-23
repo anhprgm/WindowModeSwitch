@@ -5,5 +5,5 @@ App only for Mipad 5 (nabu).
 2. Check file in valid folder
 3. Qs tile added
 ### Download file
-[CLICK TO DOWNLOAD] () 
+https://github.com/anhprgm/WindowModeSwitch/raw/master/WindowSwitch.apk
 
