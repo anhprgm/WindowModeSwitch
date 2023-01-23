@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Windows Mode Switch</string>
+    <string name="windows_mode_switch">Windows Mode Switch</string>
+    <string name="switch_to_window_11">Switch To Window 11</string>
+    <string name="check_root_status">Check Root Status</string>
+    <string name="check_file_boot_in_sdcard_windows">Check file boot in /sdcard/windows</string>
+    <string name="fail_file_boot">Have not file boot in /sdcard/windows</string>
+    <string name="success_file_boot">Haved file boot in /sdcard/windows</string>
+    <string name="file_not_exist">/sdcard/windows/boot.img doesn\'t exist</string>
+    <string name="loading">Switching ...</string>
+    <string name="w11mode">Windows Mode</string>
+    <string name="download_file_boot">DownLoad file boot</string>
+    <string name="guide">Guide</string>
+</resources>

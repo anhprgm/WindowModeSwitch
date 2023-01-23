@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "175251700605",
+    "project_id": "window-mode-switch",
+    "storage_bucket": "window-mode-switch.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175251700605:android:57d29098f4ea3f6f61aa14",
+        "android_client_info": {
+          "package_name": "com.teh.windowmodeswitch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "175251700605-nh82qjtnrfkjtjfh44qi2embgjl5f7uo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQvSGnI6GNOnVEmyjygNiUvn6QqBV1kAw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "175251700605-nh82qjtnrfkjtjfh44qi2embgjl5f7uo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
