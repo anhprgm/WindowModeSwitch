@@ -1,4 +1,4 @@
-# WindowModeSwitch
+# WindowsModeSwitch
 App only for Mipad 5 (nabu).
 ## Features
 1. Download file boot in app
