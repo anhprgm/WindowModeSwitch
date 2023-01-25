@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chuyển Chế Độ Window</string>
+    <string name="windows_mode_switch">Chuyển Chế Độ Window</string>
+    <string name="switch_to_window_11">Chuyển Sang Window 11</string>
+    <string name="check_root_status">Kiểm Tra Trạng Thái Root</string>
+    <string name="check_file_boot_in_sdcard_windows">Kiểm tra file boot trong /sdcard/windows</string>
+    <string name="fail_file_boot">Không có file boot trong /sdcard/windows</string>
+    <string name="success_file_boot">Có file boot trong /sdcard/windows</string>
+    <string name="file_not_exist">/sdcard/windows/boot.img không tồn tại</string>
+    <string name="loading">Đang đổi</string>
+    <string name="w11mode">Chế Độ PC</string>
+    <string name="download_file_boot">Tải file boot</string>
+    <string name="guide">Hướng dẫn</string>
+    <string name="file_exist">File tồn tại trong thư mục dowload</string>
+    <string name="check_file_boot_in_sdcard">Kiểm tra file boot trong /sdcard</string>
+</resources>

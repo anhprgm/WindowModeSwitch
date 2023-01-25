@@ -47,6 +47,31 @@ class MainActivity : AppCompatActivity() {
         Shell.getShell()
         binding.btnSwitch.isEnabled = Shell.isAppGrantedRoot() != false
 
+        val filePathx = "/sdcard/windows/boot.img"
+        val commandx = "ls $filePathx"
+        try {
+            val process = Runtime.getRuntime().exec("su")
+            val os = DataOutputStream(process.outputStream)
+            os.writeBytes("$commandx\n")
+            os.writeBytes("exit\n")
+            os.flush()
+            val exitValue = process.waitFor()
+            if (exitValue == 0) {
+                val drawable = ContextCompat.getDrawable(this, R.drawable.ic_file_success)
+                binding.icCheck.setImageDrawable(drawable)
+                binding.textRoot.text = getString(R.string.success_file_boot)
+                binding.textRoot.setTextColor(Color.GREEN)
+            } else {
+                val drawable = ContextCompat.getDrawable(this, R.drawable.ic_file_error)
+                binding.icCheck.setImageDrawable(drawable)
+                binding.textRoot.text = getString(R.string.fail_file_boot)
+                binding.textRoot.setTextColor(Color.RED)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
         binding.BtnCheckRoot.setOnClickListener {
             val filePath = "/sdcard/windows/boot.img"
             val command = "ls $filePath"
@@ -60,12 +85,12 @@ class MainActivity : AppCompatActivity() {
                 if (exitValue == 0) {
                     val drawable = ContextCompat.getDrawable(this, R.drawable.ic_file_success)
                     binding.icCheck.setImageDrawable(drawable)
-                    binding.textRoot.setText(getString(R.string.success_file_boot))
+                    binding.textRoot.text = getString(R.string.success_file_boot)
                     binding.textRoot.setTextColor(Color.GREEN)
                 } else {
                     val drawable = ContextCompat.getDrawable(this, R.drawable.ic_file_error)
                     binding.icCheck.setImageDrawable(drawable)
-                    binding.textRoot.setText(getString(R.string.fail_file_boot))
+                    binding.textRoot.text = getString(R.string.fail_file_boot)
                     binding.textRoot.setTextColor(Color.RED)
                 }
             } catch (e: IOException) {
@@ -86,52 +111,6 @@ class MainActivity : AppCompatActivity() {
                 os.flush()
                 val exitValue = process.waitFor()
                 if (exitValue == 0) {
-                    val llPadding = 30
-                    val ll = LinearLayout(this)
-                    ll.orientation = LinearLayout.HORIZONTAL
-                    ll.setPadding(llPadding, llPadding, llPadding, llPadding)
-                    ll.gravity = Gravity.CENTER
-                    var llParam = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                    )
-                    llParam.gravity = Gravity.CENTER
-                    ll.layoutParams = llParam
-                    // create progressBar
-                    val progressBar = ProgressBar(this)
-                    progressBar.isIndeterminate = true
-                    progressBar.setPadding(0, 0, llPadding, 0)
-                    progressBar.layoutParams = llParam
-                    llParam = LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                    llParam.gravity = Gravity.CENTER
-
-                    // Creating a TextView inside the layout
-                    val tvText = TextView(this)
-                    tvText.text = getString(R.string.loading)
-                    tvText.setTextColor(Color.parseColor("#000000"))
-                    tvText.textSize = 20f
-                    tvText.layoutParams = llParam
-                    ll.addView(progressBar)
-                    ll.addView(tvText)
-                    val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-                    builder.setCancelable(false)
-                    builder.setView(ll)
-                    val dialog: AlertDialog = builder.create()
-                    dialog.show()
-                    val window: Window? = dialog.window
-                    if (window != null) {
-                        val layoutParams = WindowManager.LayoutParams()
-                        layoutParams.copyFrom(dialog.window?.attributes)
-                        layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT
-                        layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
-                        dialog.window?.attributes = layoutParams
-
-                        // Disabling screen touch to avoid exiting the Dialog
-                        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                    }
                     if (Shell.cmd("getprop ro.boot.slot_suffix").exec().out.contains("_a")) {
                         Log.e("WindowsSwitch", "slot a")
                         Shell.cmd(
@@ -166,23 +145,43 @@ class MainActivity : AppCompatActivity() {
 
         }
         val database = Firebase.database
-        val LinkRef = database.getReference()
-        LinkRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        val linkRef = database.getReference("link")
+        linkRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val value = snapshot.getValue<String>()
+                val value = snapshot.value.toString()
                 binding.download.setOnClickListener {
-//            val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-//            val downloadUri = Uri.parse(LinkRef)
-//            val request = DownloadManager.Request(downloadUri)
-//            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-//                .setAllowedOverRoaming(false)
-//                .setTitle("Download")
-//                .setDescription("Downloading file...")
-//                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "file.zip")
-//            val downloadId = downloadManager.enqueue(request)
-                    if (value != null) {
-                        Log.d("AAA", value)
+                    val filePath = "/storage/emulated/0/Download/nabu_win_boot.img"
+                    val command = "ls $filePath"
+                    try {
+                        val process = Runtime.getRuntime().exec("su")
+                        val os = DataOutputStream(process.outputStream)
+                        os.writeBytes("$command\n")
+                        os.writeBytes("exit\n")
+                        os.flush()
+                        val exitValue = process.waitFor()
+                        if (exitValue == 0) {
+                            binding.icDownload.setImageResource(R.drawable.ic_file_success)
+                            binding.textDownload.text = getString(R.string.file_exist)
+                            binding.textDownload.setTextColor(Color.GREEN)
+                        } else {
+                            binding.icDownload.setImageResource(R.drawable.ic_file_download)
+                            binding.textDownload.text = getString(R.string.download_file_boot)
+                            val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                            val downloadUri = Uri.parse(value)
+                            val request = DownloadManager.Request(downloadUri)
+                            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+                                .setAllowedOverRoaming(false)
+                                .setTitle("Download file boot")
+                                .setDescription("Downloading file...")
+                                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "nabu_win_boot.img")
+                            val downloadId = downloadManager.enqueue(request)
+                            Log.d("AAA", value)
+                        }
                     }
+                    catch (e : IOException) {
+                        Log.d("AAA", e.toString())
+                    }
+
                 }
             }
 
@@ -191,6 +190,66 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+        binding.guideline.setOnClickListener {
+            val url = "https://github.com/erdilS/Port-Windows-11-Xiaomi-Pad-5/"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent)
+        }
+        val s = getText(R.string.crr_slot)
+        val slot = Shell.cmd("getprop ro.boot.slot_suffix").exec().out.toString()
+        if (Shell.cmd("getprop ro.boot.slot_suffix").exec().out.contains("_a")) {
+            binding.currentSlot.text = "$s: a"
+        } else {
+            binding.currentSlot.text = "$s: b"
+        }
+        binding.dumpBootFile.setOnClickListener { dumpBootFile(slot) }
+        val filePath = "/sdcard/windows/boot_android.img"
+        val command = "ls $filePath"
+        try {
+            val process = Runtime.getRuntime().exec("su")
+            val os = DataOutputStream(process.outputStream)
+            os.writeBytes("$command\n")
+            os.writeBytes("exit\n")
+            os.flush()
+            val exitValue = process.waitFor()
+            if (exitValue == 0) {
+                binding.dumpBootFileIc.setImageResource(R.drawable.ic_file_success)
+                binding.dumpBootFileTxt.text = getString(R.string.dumped_file_boot)
+                binding.dumpBootFileTxt.setTextColor(Color.GREEN)
+            }
+        } catch (e: IOException) {
+            Log.e("err", e.toString())
+        }
+    }
 
+
+    private fun dumpBootFile(string: String) {
+        Shell.getShell()
+        val filePath = "/sdcard/windows/boot_android.img"
+        val command = "ls $filePath"
+        try {
+            val process = Runtime.getRuntime().exec("su")
+            val os = DataOutputStream(process.outputStream)
+            os.writeBytes("$command\n")
+            os.writeBytes("exit\n")
+            os.flush()
+            val exitValue = process.waitFor()
+            if (exitValue == 0) {
+                binding.dumpBootFileIc.setImageResource(R.drawable.ic_file_success)
+                binding.dumpBootFileTxt.text = getString(R.string.dumped_file_boot)
+                binding.dumpBootFileTxt.setTextColor(Color.GREEN)
+            } else {
+                Toast.makeText(this, "dumping ...", Toast.LENGTH_SHORT).show()
+                if (string.contains("_a")) {
+                    Log.d("AA", "a")
+                    Shell.cmd("dd if=/dev/block/bootdevice/by-name/boot_a of=/sdcard/windows/boot_android.img").exec()
+                } else Shell.cmd("dd if=/dev/block/bootdevice/by-name/boot_b of=/sdcard/windows/boot_android.img").exec()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
     }
 }

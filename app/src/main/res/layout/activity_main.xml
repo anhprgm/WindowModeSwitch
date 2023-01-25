@@ -39,12 +39,11 @@
             android:layout_margin="2dp"
             android:paddingBottom="10dp"
             android:layout_weight="1"
-            android:background="@drawable/background_card"
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="200dp"
                 android:src="@drawable/windows_11_icon"
                 android:contentDescription="@string/switch_to_window_11" />
             <TextView
@@ -67,21 +66,21 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:id="@+id/Btn_check_root"
-            android:background="@drawable/background_card"
             android:orientation="vertical"
             android:layout_margin="2dp"
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/ic_check"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="200dp"
                 android:src="@drawable/ic_file"
                 android:contentDescription="@string/check_file_boot_in_sdcard_windows" />
             <TextView
                 android:id="@+id/text_root"
                 android:layout_width="match_parent"
+                android:maxLines="1"
                 android:layout_height="wrap_content"
-                android:text="@string/check_root_status"
+                android:text="@string/check_file_boot_in_sdcard"
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
@@ -94,6 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="2"
+        android:id="@+id/body2"
         android:layout_below="@id/body1"
         android:orientation="horizontal"
         android:baselineAligned="false">
@@ -106,15 +106,17 @@
             android:layout_margin="2dp"
             android:paddingBottom="10dp"
             android:layout_weight="1"
-            android:background="@drawable/background_card"
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <ImageView
+                android:id="@+id/ic_download"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="200dp"
                 android:src="@drawable/ic_file_download"
                 android:contentDescription="@string/switch_to_window_11" />
             <TextView
+                android:maxLines="1"
+                android:id="@+id/text_download"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/download_file_boot"
@@ -133,13 +135,12 @@
             android:layout_weight="1"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/background_card"
             android:orientation="vertical"
             android:layout_margin="2dp"
             android:layout_height="wrap_content">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="200dp"
                 android:src="@drawable/ic_guide"
                 android:contentDescription="@string/check_file_boot_in_sdcard_windows" />
             <TextView
@@ -153,4 +154,58 @@
                 android:fontFamily="@font/u_light"/>
         </LinearLayout>
     </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_below="@id/body2"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:paddingTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_margin="2dp"
+            android:id="@+id/dumpBootFile"
+            android:paddingBottom="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/dumpBootFileIc"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/ic_file"
+                android:contentDescription="@string/switch_to_window_11" />
+            <TextView
+                android:maxLines="1"
+                android:id="@+id/dumpBootFileTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dump_boot_file"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:textSize="25sp"
+                android:fontFamily="@font/u_light"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/crr_slot"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:id="@+id/currentSlot"/>
+
 </RelativeLayout>
