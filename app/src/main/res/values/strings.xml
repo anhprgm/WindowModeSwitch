@@ -11,7 +11,7 @@
     <string name="w11mode">Windows Mode</string>
     <string name="download_file_boot">Download UEFI image</string>
     <string name="guide">Guide</string>
-    <string name="file_exist">UEFI image exist in download Folder</string>
+    <string name="file_exist">UEFI image exist in sdcard Folder</string>
     <string name="check_file_boot_in_sdcard">Check file boot in sdcard</string>
     <string name="crr_slot" translatable="false">Current slot</string>
     <string name="dump_boot_file" translatable="false">Dump boot file</string>

@@ -4,15 +4,14 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.app.DownloadManager
 import android.app.ProgressDialog
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.os.Message
 import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
@@ -72,6 +71,29 @@ class MainActivity : AppCompatActivity() {
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
+
+
+        val filePathUEFI = "/sdcard/windows/boot.img"
+        val commandf = "ls $filePathUEFI"
+        try {
+            val process = Runtime.getRuntime().exec("su")
+            val os = DataOutputStream(process.outputStream)
+            os.writeBytes("$commandf\n")
+            os.writeBytes("exit\n")
+            os.flush()
+            val exitValue = process.waitFor()
+            if (exitValue == 0) {
+                binding.icDownload.setImageResource(R.drawable.ic_file_success)
+                binding.textDownload.text = getString(R.string.file_exist)
+                binding.textDownload.setTextColor(Color.GREEN)
+            } else {
+
+            }
+        }
+        catch (e : IOException) {
+            Log.d("AAA", e.toString())
+        }
+
         binding.BtnCheckRoot.setOnClickListener {
             val filePath = "/sdcard/windows/boot.img"
             val command = "ls $filePath"
@@ -144,12 +166,21 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+        val progressBar = ProgressBar(this)
+        val builder = AlertDialog.Builder(this)
+        builder.setView(progressBar)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+
+
         val database = Firebase.database
         val linkRef = database.getReference("link")
         linkRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val value = snapshot.value.toString()
                 binding.download.setOnClickListener {
+                    alertDialog.show()
+
                     val filePath = "/storage/emulated/0/Download/nabu_win_boot.img"
                     val command = "ls $filePath"
                     try {
@@ -175,7 +206,24 @@ class MainActivity : AppCompatActivity() {
                                 .setDescription("Downloading file...")
                                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "nabu_win_boot.img")
                             val downloadId = downloadManager.enqueue(request)
-                            Log.d("AAA", value)
+                            val br = object :BroadcastReceiver() {
+                                override fun onReceive(p0: Context?, p1: Intent?) {
+                                    val id:Long? = p1?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+                                    if (id==downloadId) {
+                                        Shell.cmd("dd if=/storage/emulated/0/Download/nabu_win_boot.img of=/sdcard/windows/boot.img").exec()
+                                        Toast.makeText(applicationContext, "success", Toast.LENGTH_SHORT).show()
+                                        alertDialog.dismiss()
+                                        binding.icCheck.setImageResource(R.drawable.ic_file_success)
+                                        binding.textRoot.text = getString(R.string.success_file_boot)
+                                        binding.textRoot.setTextColor(Color.GREEN)
+                                        binding.icDownload.setImageResource(R.drawable.ic_file_success)
+                                        binding.textDownload.text = getString(R.string.success_file_boot)
+                                        binding.textDownload.setTextColor(Color.GREEN)
+                                    }
+                                }
+
+                            }
+                            registerReceiver(br, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
                         }
                     }
                     catch (e : IOException) {
@@ -251,5 +299,8 @@ class MainActivity : AppCompatActivity() {
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
+
     }
+
+
 }
